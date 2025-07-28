@@ -1,2 +1,24 @@
-/data/cifar-10-batches-py
-/data/cifar-10-python.tar.gz
+# Python virtual environments
+.venv/
+venv/
+
+# PyCharm project files
+.idea/
+
+# FFCV binary datasets
+*.beton
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Data directory
+data/
