@@ -22,3 +22,13 @@ Thumbs.db
 
 # Data directory
 data/
+
+template.ipynb
+
+perception_models/
+
+test.ipynb
+
+model_weights/
+
+perception_models/
