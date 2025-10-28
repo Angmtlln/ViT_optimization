@@ -15,7 +15,11 @@ Repository of completed experiments exploring optimization strategies for Vision
    - Results: Top-1: TODO, Params: TODO, Latency: TODO
 
 2. Task Distillation (logit / feature)
+<<<<<<< HEAD
    - Notebook: experiments/-
+=======
+   - Notebook: experiments/Task_distillation.ipynb
+>>>>>>> 35cecae (save local changes)
    - Objective: Match teacher logits/features with student.
    - Status: Completed
    - Results: Top-1: TODO, Params: TODO, Latency: TODO
@@ -27,25 +31,41 @@ Repository of completed experiments exploring optimization strategies for Vision
    - Results: Accuracy drop: TODO, Size reduction: TODO
 
 4. Pruning
+<<<<<<< HEAD
    - Notebooks: experiments/-
+=======
+   - Notebooks: experiments/Pruning_Unstructured.ipynb, experiments/Pruning_Structured.ipynb
+>>>>>>> 35cecae (save local changes)
    - Methods: Magnitude pruning, structured attention-head/channel pruning, iterative unstructured pruning.
    - Status: Completed
    - Results: Sparsity vs accuracy curve: TODO
 
 5. Weight Sharing & Parameter Factorization
+<<<<<<< HEAD
    - Notebook: experiments/-
+=======
+   - Notebook: experiments/Weight_sharing.ipynb
+>>>>>>> 35cecae (save local changes)
    - Objective: Reduce parameter redundancy via shared projection layers and low-rank factorization.
    - Status: Completed
    - Results: Params reduced: TODO, Perf: TODO
 
 6. Architecture Search (block-level)
+<<<<<<< HEAD
    - Notebook: experiments/-
+=======
+   - Notebook: experiments/Arch_search_BlockLevel.ipynb
+>>>>>>> 35cecae (save local changes)
    - Objective: Search for reduced-depth/width block structures under FLOPs/latency budget.
    - Status: Completed
    - Results: Pareto front saved: experiments/arch_pareto_*.csv
 
 7. Latency & Energy Evaluation
+<<<<<<< HEAD
    - Notebook: experiments/-
+=======
+   - Notebook: experiments/Latency_energy_eval.ipynb
+>>>>>>> 35cecae (save local changes)
    - Devices: NVIDIA GPU (CUDA) and CPU (Windows).
    - Status: Completed
    - Results: Latency and energy table: TODO
