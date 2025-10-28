@@ -15,7 +15,7 @@ Repository of completed experiments exploring optimization strategies for Vision
    - Results: Top-1: TODO, Params: TODO, Latency: TODO
 
 2. Task Distillation (logit / feature)
-   - Notebook: experiments/Task_distillation.ipynb
+   - Notebook: experiments/-
    - Objective: Match teacher logits/features with student.
    - Status: Completed
    - Results: Top-1: TODO, Params: TODO, Latency: TODO
@@ -27,25 +27,25 @@ Repository of completed experiments exploring optimization strategies for Vision
    - Results: Accuracy drop: TODO, Size reduction: TODO
 
 4. Pruning
-   - Notebooks: experiments/Pruning_Unstructured.ipynb, experiments/Pruning_Structured.ipynb
+   - Notebooks: experiments/-
    - Methods: Magnitude pruning, structured attention-head/channel pruning, iterative unstructured pruning.
    - Status: Completed
    - Results: Sparsity vs accuracy curve: TODO
 
 5. Weight Sharing & Parameter Factorization
-   - Notebook: experiments/Weight_sharing.ipynb
+   - Notebook: experiments/-
    - Objective: Reduce parameter redundancy via shared projection layers and low-rank factorization.
    - Status: Completed
    - Results: Params reduced: TODO, Perf: TODO
 
 6. Architecture Search (block-level)
-   - Notebook: experiments/Arch_search_BlockLevel.ipynb
+   - Notebook: experiments/-
    - Objective: Search for reduced-depth/width block structures under FLOPs/latency budget.
    - Status: Completed
    - Results: Pareto front saved: experiments/arch_pareto_*.csv
 
 7. Latency & Energy Evaluation
-   - Notebook: experiments/Latency_energy_eval.ipynb
+   - Notebook: experiments/-
    - Devices: NVIDIA GPU (CUDA) and CPU (Windows).
    - Status: Completed
    - Results: Latency and energy table: TODO
