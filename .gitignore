@@ -32,3 +32,8 @@ test.ipynb
 model_weights/
 
 perception_models/
+
+results/
+*.pth
+*.pt
+*.ckpt
