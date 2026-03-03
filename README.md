@@ -20,21 +20,20 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 ## Experiments & Results
 
 ### 1. Logit Distillation
-- **Notebooks:** `experiments/Task_distillation.ipynb`
+- **Notebook:** `experiments/Task_distillation.ipynb`
 - **Objective:** Match teacher soft logits with KL-divergence loss + CE.
 - **Hyperparameters explored:** Temperature `T ∈ {1, 3, 4, 5, 10}`, alpha `α ∈ {0.3, 0.5, 0.7, 0.9}`
 
-| Config | Student-S Test Acc | Student-T Test Acc |
-|--------|-------------------|-------------------|
-| Baseline (no KD) | 76.25% | 71.88% |
-| T=4, α=0.5 *(best S)* | **93.50%** | — |
-| T=4, α=0.3 | 92.88% | — |
-| T=4, α=0.7 | 92.13% | — |
-| T=1, α=0.5 | 90.75% | — |
-| T=3, α=0.5 | 90.00% | — |
-| T=5, α=0.5 | 84.38% | — |
-| T=10, α=0.5 | 82.38% | — |
-| T=4, α=0.5 *(best T)* | — | **77.38%** |
+| Config | Student-S | Student-T |
+|--------|:---------:|:---------:|
+| Baseline (no KD) | 80.88% | 70.50% |
+| T=3, α=0.5 | **93.50%** ⭐ | 80.50% |
+| T=4, α=0.3 | 92.88% | 83.12% |
+| T=4, α=0.9 | 92.00% | 81.00% |
+| T=5, α=0.5 | 92.75% | **85.38%** ⭐ |
+| T=4, α=0.7 | 88.75% | 75.75% |
+| T=1, α=0.5 | 90.75% | 80.75% |
+| T=10, α=0.5 | 84.00% | 82.50% |
 
 <details>
 <summary>📊 Графики Logit KD</summary>
@@ -52,16 +51,15 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 - **Objective:** Match intermediate CLS-token features via projection layer + MSE.
 - **Hyperparameters explored:** Alpha `α ∈ {0.3, 0.5, 0.7, 0.9}`, Temperature `T ∈ {2, 4, 6}`, projection layer
 
-| Config | Student-S Test Acc | Student-T Test Acc |
-|--------|-------------------|-------------------|
-| Baseline (no KD) | 75.38% | 72.50% |
-| α=0.3, T=4, proj *(best S)* | **88.25%** | — |
-| α=0.5, T=4, proj | 86.75% | — |
-| α=0.5, T=2, proj | 84.00% | — |
-| α=0.5, T=6, proj | 80.75% | — |
-| α=0.7, T=4, proj | 86.75% | — |
-| α=0.9, T=4, proj | 84.75% | — |
-| α=0.5, T=4, proj *(best T)* | — | **85.38%** |
+| Config | Student-S | Student-T |
+|--------|:---------:|:---------:|
+| Baseline (no KD) | 76.75% | 71.88% |
+| α=0.7, proj, T=4 | 90.00% | 79.12% |
+| α=0.9, proj, T=4 | 89.00% | **81.88%** ⭐ |
+| T=2, α=0.5 | **89.38%** ⭐ | 78.25% |
+| α=0.5, proj, T=4 | 88.75% | 74.62% |
+| α=0.3, proj, T=4 | 88.25% | 72.12% |
+| T=6, α=0.5 | 78.50% | 77.38% |
 
 <details>
 <summary>📊 Графики Feature KD</summary>
@@ -76,21 +74,20 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 
 ### 3. Attention Distillation
 - **Notebook:** `experiments/Attention_distillation_Small.ipynb`
-- **Objective:** Match teacher–student attention maps via MSE/Cosine/L1 loss + CE.
-- **Hyperparameters explored:** Alpha `α ∈ {0.3, 0.5, 0.6, 0.7}`, loss type `{mse, cosine, l1}`, lr `{1e-4, 2e-4, 5e-5}`
+- **Objective:** Match teacher–student attention maps via MSE / Cosine / L1 loss + CE.
+- **Hyperparameters explored:** Alpha `α ∈ {0.3, 0.5, 0.6, 0.7}`, loss `{mse, cosine, l1}`, lr `{1e-4, 2e-4, 5e-5}`
 
-| Config | Student-S Test Acc | Student-T Test Acc |
-|--------|-------------------|-------------------|
-| Baseline (no KD) | 76.75% | 71.88% |
-| α=0.5, mse *(best S)* | **94.90%** | — |
-| α=0.7, mse | 87.29% | — |
-| α=0.3, mse | 87.25% | — |
-| α=0.6, mse | 77.38% | — |
-| α=0.5, cosine | 79.62% | — |
-| α=0.5, l1 | 74.25% | — |
-| lr=2e-4 | 74.50% | — |
-| lr=5e-5 | 71.25% | — |
-| α=0.5, T_kd=4.5 *(best T)* | — | **77.38%** |
+| Config | Student-S | Student-T |
+|--------|:---------:|:---------:|
+| Baseline (no distill) | 89.25% | 73.25% |
+| lr=5e-5 | **92.00%** ⭐ | **82.88%** ⭐ |
+| α=0.3, mse | 87.25% | 73.75% |
+| α=0.7, mse | 84.50% | 72.75% |
+| α=0.5, cosine | 79.62% | 77.75% |
+| α=0.6, mse | 77.38% | 75.12% |
+| α=0.5, mse | 74.25% | 80.88% |
+| α=0.5, l1 | 74.50% | 72.88% |
+| lr=2e-4 | 71.25% | 71.00% |
 
 <details>
 <summary>📊 Графики Attention KD</summary>
@@ -106,17 +103,18 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 ### 4. Contrastive Distillation
 - **Notebook:** `experiments/Attention_distillation_Small.ipynb`
 - **Objective:** Contrastive feature alignment between teacher and student CLS tokens.
-- **Hyperparameters explored:** Alpha `α ∈ {0.3, 0.5, 0.7}`, `T_kd ∈ {2, 4, 6}`, `T_c ∈ {0.05, 0.07, 0.10}`
+- **Hyperparameters explored:** Alpha `α ∈ {0.3, 0.5, 0.7}`, `T_kd ∈ {2, 6}`, `T_c ∈ {0.05, 0.10}`
 
-| Config | Student-S Test Acc | Student-T Test Acc |
-|--------|-------------------|-------------------|
-| Baseline (no contrast) | 76.75% | 62.38% |
-| α=0.8, max T_kd=3 *(best S)* | **92.00%** | — |
-| α=0.5, T_kd=2 | 81.25% | — |
-| α=0.5, T_kd=6 | 80.38% | — |
-| α=0.5, T_c=0.05 | 77.38% | — |
-| α=0.5, T_c=0.10 | 74.25% | — |
-| α=0.9, k=0, T_kd=2 *(best T)* | — | **86.38%** |
+| Config | Student-S | Student-T |
+|--------|:---------:|:---------:|
+| Baseline (no contrast) | 90.75% | 77.88% |
+| T_c=0.10 | 91.25% | **87.38%** ⭐ |
+| T_kd=2 | 91.00% | 86.38% |
+| α=0.3 | **91.62%** ⭐ | 78.75% |
+| α=0.5 | 91.12% | 83.50% |
+| α=0.7 | 90.62% | 85.12% |
+| T_kd=6 | 90.62% | 83.75% |
+| T_c=0.05 | 90.38% | 77.00% |
 
 <details>
 <summary>📊 Графики Contrastive KD</summary>
@@ -132,15 +130,15 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 ## Overall Best Results
 
 | Method | Student-S Best | Student-T Best |
-|--------|---------------|---------------|
-| **Attention KD** | **94.90%** (α=0.5, mse) | 77.38% |
-| Logit KD | 93.50% (T=4, α=0.5) | 77.38% |
-| Contrastive KD | 92.00% | **86.38%** |
-| Feature KD | 88.25% (α=0.3) | 85.38% |
-| Baseline (no KD) | 76.25% | 71.88% |
+|--------|:-------------:|:-------------:|
+| Logit KD | **93.50%** (T=3, α=0.5) | 85.38% (T=5, α=0.5) |
+| Feature KD | 89.38% (T=2, α=0.5) | 81.88% (α=0.9, proj) |
+| Attention KD | 92.00% (lr=5e-5) | 82.88% (lr=5e-5) |
+| Contrastive KD | 91.62% (α=0.3) | **87.38%** (T_c=0.10) |
+| Baseline (no KD) | 80.88% | 70.50% |
 
-> **🏆 Student-S:** Attention KD (α=0.5, mse) → **94.90%**  
-> **🏆 Student-T:** Contrastive KD → **86.38%**
+> **🏆 Student-S:** Logit KD (T=3, α=0.5) → **93.50%** (+12.62% vs baseline)
+> **🏆 Student-T:** Contrastive KD (T_c=0.10) → **87.38%** (+16.88% vs baseline)
 
 ---
 
@@ -173,7 +171,6 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 | ![Radar](plots/combined/radar_best.png) | **Radar chart** — S vs T по всем 4 методам |
 | ![Heatmap](plots/combined/heatmap_hyperparams.png) | **Heatmap** — α × T → accuracy для Logit и Feature KD |
 | ![Scatter](plots/combined/scatter_S_vs_T.png) | **Scatter S vs T** — каждая точка = один эксперимент |
-| ![Quantization](plots/quantization_comparison/) | **Quantization** — сравнение квантизации |
 
 ---
 
@@ -212,7 +209,8 @@ ViT_optimization/
 │   └── quantization_comparison/
 ├── scripts/                        # Utility scripts
 │   ├── plot_kd_comparison.py
-│   └── plot_extra_charts.py
+│   ├── plot_extra_charts.py
+│   └── dump_results.py
 └── README.md
 ```
 
@@ -226,10 +224,13 @@ cd "c:\Users\amirn\OneDrive\Рабочий стол\ViT_opti\ViT_optimization"
 # Install dependencies
 pip install torch torchvision numpy scikit-learn pillow matplotlib
 
-# 1. Main KD comparison charts (saves to plots/kd_comparison/)
+# Dump all results to console
+python scripts\dump_results.py
+
+# Main KD comparison charts → plots/kd_comparison/
 python scripts\plot_kd_comparison.py
 
-# 2. Extra analysis charts (saves to plots/combined/)
+# Extra analysis charts → plots/combined/
 python scripts\plot_extra_charts.py
 ```
 
