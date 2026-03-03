@@ -191,6 +191,75 @@ Four distinct KD strategies were systematically compared — Logit KD, Feature K
 
 ---
 
+## Model Compression & Quantization
+
+### Architecture compression: Teacher → Student
+
+| Model | Params | Size (fp32) | vs Teacher |
+|-------|-------:|------------:|-----------:|
+| Teacher: PE-Core-L14-336 | 671M | ~2 600 MB | 1× |
+| Student-S: PE-Core-S16-384 | 87.2M | 332.6 MB | **7.8×** |
+| Student-T: PE-Core-T16-384 | 69.5M | 265.3 MB | **9.8×** |
+
+> Knowledge Distillation улучшает **accuracy**, но не размер модели.  
+> Реальное сжатие размера даёт только квантизация.
+
+---
+
+### Student-S (PE-Core-S16-384 · 332.6 MB fp32)
+
+| Config | Method | fp32 acc | quant acc | Δ acc | quant size | compression |
+|--------|--------|:--------:|:---------:|:-----:|-----------:|:-----------:|
+| logit_T3_α0.5 | PTQ int8 | 93.50% | 93.38% | −0.13% | 202.2 MB | 1.64× |
+| logit_T3_α0.5 | Progressive | 93.50% | **93.75%** | **+0.25%** | 203.0 MB | 1.64× |
+| logit_T3_α0.5 | QAT+KD | 93.50% | 89.38% | −4.12% | 202.3 MB | 1.64× |
+| attention_lr5e-5 | PTQ int8 | 92.00% | 92.00% | 0.00% | 202.2 MB | 1.64× |
+| attention_lr5e-5 | Progressive | 92.00% | 92.50% | +0.50% | 203.0 MB | 1.64× |
+| attention_lr5e-5 | QAT+KD | 92.00% | 88.13% | −3.88% | 202.3 MB | 1.64× |
+| contrastive_α0.3 | PTQ int8 | 91.63% | 91.63% | 0.00% | 202.2 MB | 1.64× |
+| contrastive_α0.3 | Progressive | 91.63% | 91.25% | −0.38% | 203.0 MB | 1.64× |
+| contrastive_α0.3 | QAT+KD | 91.63% | 89.00% | −2.63% | 202.3 MB | 1.64× |
+| feature_α0.7_proj | PTQ int8 | 90.00% | 90.25% | +0.25% | 202.2 MB | 1.64× |
+| feature_α0.7_proj | Progressive | 90.00% | 90.13% | +0.13% | 203.0 MB | 1.64× |
+| feature_α0.7_proj | QAT+KD | 90.00% | 88.88% | −1.13% | 203.0 MB | 1.64× |
+
+**🏆 Best Student-S:** `logit_T3_α0.5` + Progressive → **93.75%** at **203.0 MB** (**12.8× vs Teacher**)
+
+---
+
+### Student-T (PE-Core-T16-384 · 265.3 MB fp32)
+
+| Config | Method | fp32 acc | quant acc | Δ acc | quant size | compression |
+|--------|--------|:--------:|:---------:|:-----:|-----------:|:-----------:|
+| contrastive_T0.10 | PTQ int8 | 87.38% | 87.63% | +0.25% | 172.0 MB | 1.54× |
+| contrastive_T0.10 | Progressive | 87.38% | **88.50%** | **+1.13%** | 172.7 MB | 1.54× |
+| contrastive_T0.10 | QAT+KD | 87.38% | 84.63% | −2.75% | 172.0 MB | 1.54× |
+| logit_T5_α0.5 | PTQ int8 | 85.38% | 84.88% | −0.50% | 172.0 MB | 1.54× |
+| logit_T5_α0.5 | Progressive | 85.38% | 84.13% | −1.25% | 172.7 MB | 1.54× |
+| logit_T5_α0.5 | QAT+KD | 85.38% | 82.75% | −2.63% | 172.0 MB | 1.54× |
+| attention_lr5e-5 | PTQ int8 | 82.88% | 82.75% | −0.13% | 172.0 MB | 1.54× |
+| attention_lr5e-5 | Progressive | 82.88% | 81.88% | −1.00% | 172.7 MB | 1.54× |
+| attention_lr5e-5 | QAT+KD | 82.88% | 82.13% | −0.75% | 172.0 MB | 1.54× |
+| feature_α0.9_proj | PTQ int8 | 81.88% | 82.00% | +0.13% | 172.0 MB | 1.54× |
+| feature_α0.9_proj | Progressive | 81.88% | 82.00% | +0.13% | 172.7 MB | 1.54× |
+| feature_α0.9_proj | QAT+KD | 81.88% | 81.00% | −0.88% | 172.7 MB | 1.54× |
+
+**🏆 Best Student-T:** `contrastive_T0.10` + Progressive → **88.50%** at **172.7 MB** (**15.1× vs Teacher**)
+
+---
+
+### Full Pipeline Summary
+
+| Model | Baseline (no KD) | After KD (fp32) | After KD + best quant | Total vs Teacher |
+|-------|:----------------:|:---------------:|:---------------------:|:----------------:|
+| Student-S | 80.88% · 332.6 MB | 93.50% · 332.6 MB | **93.75%** · 203.0 MB | **12.8×** smaller |
+| Student-T | 70.50% · 265.3 MB | 87.38% · 265.3 MB | **88.50%** · 172.7 MB | **15.1×** smaller |
+
+> **Key insight:** PTQ и Progressive дают сопоставимое сжатие (~1.54–1.64×) почти без потери accuracy.  
+> QAT+KD даёт аналогичный размер, но теряет 2–4% accuracy — не оправдывает затраты на дообучение.
+
+
+
 ## Visualizations
 
 ### Full Comparison (S vs T, all methods)
