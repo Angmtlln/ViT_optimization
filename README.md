@@ -5,6 +5,23 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 
 ---
 
+## Motivation
+
+Modern Vision Transformers (ViT) achieve state-of-the-art accuracy on image classification tasks, but their size makes real-world deployment challenging — large models require significant GPU memory, have high inference latency, and are impractical for edge devices or resource-constrained environments.
+
+This project explores **Knowledge Distillation (KD)** as a compression strategy: instead of training a small model from scratch, we transfer knowledge from a powerful pre-trained teacher model to a compact student model. The goal is to retain as much of the teacher's accuracy as possible while dramatically reducing model size and compute requirements.
+
+**Why Kvasir-v2?**  
+Medical image classification is a domain where both accuracy and efficiency matter — high accuracy is critical for diagnosis support, while efficiency is needed for deployment in clinical workflows. Kvasir-v2 (gastrointestinal endoscopy, 8 classes) provides a realistic and challenging benchmark.
+
+**Why these student models?**  
+The teacher **PE-Core-L14-336** (671M params) is far too large for practical deployment. The students **PE-Core-S16-384** (87.2M, ~8× smaller) and **PE-Core-T16-384** (69.5M, ~10× smaller) represent meaningful compression targets while sharing the same ViT architecture family, making knowledge transfer more effective.
+
+**What we tested:**  
+Four distinct KD strategies were systematically compared — Logit KD, Feature KD, Attention KD, and Contrastive KD — each with a sweep of hyperparameters to find the optimal distillation configuration per student model.
+
+---
+
 ## Summary
 
 | Goal | Compress student ViT models via Knowledge Distillation while retaining classification accuracy |
@@ -38,9 +55,15 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 <details>
 <summary>📊 Графики Logit KD</summary>
 
-| Student-S | Student-T |
-|-----------|-----------|
-| ![Logit S](plots/logit_distillation_S/S_logit_kd.png) | ![Logit T](plots/logit_distillation_T/T_logit_kd.png) |
+![Temperature effect S](plots/logit_distillation_S/temperature_effect.png)
+![Alpha effect S](plots/logit_distillation_S/alpha_effect.png)
+![Learning curve S](plots/logit_distillation_S/learning_curve_main.png)
+![Loss curves S](plots/logit_distillation_S/loss_curves.png)
+
+![Temperature effect T](plots/logit_distillation_T/temperature_effect.png)
+![Alpha effect T](plots/logit_distillation_T/alpha_effect.png)
+![Learning curve T](plots/logit_distillation_T/learning_curve_main.png)
+![Loss curves T](plots/logit_distillation_T/loss_curves.png)
 
 </details>
 
@@ -64,9 +87,17 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 <details>
 <summary>📊 Графики Feature KD</summary>
 
-| Student-S | Student-T |
-|-----------|-----------|
-| ![Feature S](plots/feature_distillation_S/S_feature_kd.png) | ![Feature T](plots/feature_distillation_T/T_feature_kd.png) |
+![Temperature effect S](plots/feature_distillation_S/temperature_effect.png)
+![Alpha effect S](plots/feature_distillation_S/alpha_effect.png)
+![Cosine similarity S](plots/feature_distillation_S/cosine_similarity.png)
+![Learning curve S](plots/feature_distillation_S/learning_curve_main.png)
+![Loss curves S](plots/feature_distillation_S/loss_curves.png)
+
+![Temperature effect T](plots/feature_distillation_T/temperature_effect.png)
+![Alpha effect T](plots/feature_distillation_T/alpha_effect.png)
+![Cosine similarity T](plots/feature_distillation_T/cosine_similarity.png)
+![Learning curve T](plots/feature_distillation_T/learning_curve_main.png)
+![Loss curves T](plots/feature_distillation_T/loss_curves.png)
 
 </details>
 
@@ -92,9 +123,19 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 <details>
 <summary>📊 Графики Attention KD</summary>
 
-| Student-S | Student-T |
-|-----------|-----------|
-| ![Attention S](plots/attention_distillation_S/S_attention_kd.png) | ![Attention T](plots/attention_distillation_T/T_attention_kd.png) |
+![Alpha effect S](plots/attention_distillation_S/alpha_effect.png)
+![Loss type effect S](plots/attention_distillation_S/loss_type_effect.png)
+![LR effect S](plots/attention_distillation_S/lr_effect.png)
+![Attention MSE S](plots/attention_distillation_S/attention_mse.png)
+![Learning curve S](plots/attention_distillation_S/learning_curve.png)
+![Loss curves S](plots/attention_distillation_S/loss_curves.png)
+
+![Alpha effect T](plots/attention_distillation_T/alpha_effect.png)
+![Loss type effect T](plots/attention_distillation_T/loss_type_effect.png)
+![LR effect T](plots/attention_distillation_T/lr_effect.png)
+![Attention MSE T](plots/attention_distillation_T/attention_mse.png)
+![Learning curve T](plots/attention_distillation_T/learning_curve.png)
+![Loss curves T](plots/attention_distillation_T/loss_curves.png)
 
 </details>
 
@@ -119,9 +160,17 @@ All experiments use **Kvasir-v2** (8 classes, 4 000 images) and a fixed teacher 
 <details>
 <summary>📊 Графики Contrastive KD</summary>
 
-| Student-S | Student-T |
-|-----------|-----------|
-| ![Contrastive S](plots/contrastive_distillation_S/S_contrastive_kd.png) | ![Contrastive T](plots/contrastive_distillation_T/T_contrastive_kd.png) |
+![Alpha effect S](plots/contrastive_distillation_S/alpha_effect.png)
+![Temperature effect S](plots/contrastive_distillation_S/temperature_effect.png)
+![Cosine similarity S](plots/contrastive_distillation_S/cosine_similarity.png)
+![Learning curve S](plots/contrastive_distillation_S/learning_curve.png)
+![Loss curves S](plots/contrastive_distillation_S/loss_curves.png)
+
+![Alpha effect T](plots/contrastive_distillation_T/alpha_effect.png)
+![Temperature effect T](plots/contrastive_distillation_T/temperature_effect.png)
+![Cosine similarity T](plots/contrastive_distillation_T/cosine_similarity.png)
+![Learning curve T](plots/contrastive_distillation_T/learning_curve.png)
+![Loss curves T](plots/contrastive_distillation_T/loss_curves.png)
 
 </details>
 
