@@ -20,7 +20,7 @@ plt.rcParams['legend.fontsize'] = 11
 # LOADING
 # ==============================
 
-def load_results(results_dir='../results/contrastive_s'):
+def load_results(results_dir='../results/contrastive_distillation_S'):
     results_dir = Path(results_dir)
     results = {}
 
@@ -237,7 +237,7 @@ def plot_cosine_similarity(results, save_path):
 
 def main():
     results = load_results()
-    plots_dir = Path('../plots/contrastive_distillation')
+    plots_dir = Path('../plots/contrastive_distillation_S')
     plots_dir.mkdir(parents=True, exist_ok=True)
 
     plot_learning_curves(results, plots_dir / 'learning_curve.png')

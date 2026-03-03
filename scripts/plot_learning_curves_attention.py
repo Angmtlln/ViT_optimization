@@ -20,7 +20,7 @@ plt.rcParams['legend.fontsize'] = 11
 # LOADING
 # ==============================
 
-def load_results(results_dir='../results/attention_t'):
+def load_results(results_dir='../results/attention_distillation_T'):
     results_dir = Path(results_dir)
     results = {}
 
@@ -333,7 +333,7 @@ def plot_attention_mse(results, save_path):
 
 def main():
     results = load_results()
-    plots_dir = Path('../plots/attention_distillation_t')
+    plots_dir = Path('../plots/attention_distillation_T')
     plots_dir.mkdir(parents=True, exist_ok=True)
 
     plot_learning_curves(results, plots_dir / 'learning_curve.png')

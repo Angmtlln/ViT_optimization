@@ -13,7 +13,7 @@ plt.rcParams['axes.labelsize'] = 14
 plt.rcParams['axes.titlesize'] = 16
 plt.rcParams['legend.fontsize'] = 11
 
-def load_results(results_dir='../results/feature_s'):
+def load_results(results_dir='../results/feature_distillation_T'):
     """Загрузка всех результатов из папки"""
     results_dir = Path(results_dir)
     results = {}
@@ -38,13 +38,15 @@ def load_results(results_dir='../results/feature_s'):
     print()
     return results
 
-def plot_main_learning_curve(results, save_path='../plots/feature_distillation/learning_curve_main.png'):
+def plot_main_learning_curve(results, save_path='../plots/feature_distillation_T/learning_curve_main.png'):
     """
     ОСНОВНОЙ ГРАФИК: Performance vs Training Budget
     
     X-axis: Training Budget (epochs × dataset_size)
     Y-axis: Validation Accuracy (%)
     """
+    # Create output directory if it doesn't exist
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     
     fig, ax = plt.subplots(figsize=(14, 9))
     
@@ -134,10 +136,12 @@ def plot_main_learning_curve(results, save_path='../plots/feature_distillation/l
     print(f'✅ Сохранен: {save_path}')
     plt.close()
 
-def plot_alpha_comparison(results, save_path='../plots/feature_distillation/alpha_effect.png'):
+def plot_alpha_comparison(results, save_path='../plots/feature_distillation_T/alpha_effect.png'):
     """
     График: Влияние веса дистилляции α (при T=4.0 с проекцией)
     """
+    # Create output directory if it doesn't exist
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     
     fig, ax = plt.subplots(figsize=(14, 8))
     
@@ -202,10 +206,12 @@ def plot_alpha_comparison(results, save_path='../plots/feature_distillation/alph
     print(f'✅ Сохранен: {save_path}')
     plt.close()
 
-def plot_temperature_comparison(results, save_path='../plots/feature_distillation/temperature_effect.png'):
+def plot_temperature_comparison(results, save_path='../plots/feature_distillation_T/temperature_effect.png'):
     """
     График: Влияние температуры (при α=0.5 с проекцией)
     """
+    # Create output directory if it doesn't exist
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     
     fig, ax = plt.subplots(figsize=(14, 8))
     
@@ -268,10 +274,12 @@ def plot_temperature_comparison(results, save_path='../plots/feature_distillatio
     print(f'✅ Сохранен: {save_path}')
     plt.close()
 
-def plot_loss_curves(results, save_path='../plots/feature_distillation/loss_curves.png'):
+def plot_loss_curves(results, save_path='../plots/feature_distillation_T/loss_curves.png'):
     """
     График: Training & Validation Loss vs Budget (с разделением на feature и classification)
     """
+    # Create output directory if it doesn't exist
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(18, 14))
     
@@ -358,10 +366,12 @@ def plot_loss_curves(results, save_path='../plots/feature_distillation/loss_curv
     print(f'✅ Сохранен: {save_path}')
     plt.close()
 
-def plot_cosine_similarity(results, save_path='../plots/feature_distillation/cosine_similarity.png'):
+def plot_cosine_similarity(results, save_path='../plots/feature_distillation_T/cosine_similarity.png'):
     """
     График: Cosine Similarity между признаками студента и учителя
     """
+    # Create output directory if it doesn't exist
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     
     fig, ax = plt.subplots(figsize=(12, 7))
     
@@ -421,10 +431,12 @@ def plot_cosine_similarity(results, save_path='../plots/feature_distillation/cos
     print(f'✅ Сохранен: {save_path}')
     plt.close()
 
-def plot_summary_table(results, save_path='../plots/feature_distillation/summary_table.png'):
+def plot_summary_table(results, save_path='../plots/feature_distillation_T/summary_table.png'):
     """
     Таблица: Сводка финальных результатов
     """
+    # Create output directory if it doesn't exist
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
     
     # Собираем данные для таблицы
     table_data = []
@@ -545,35 +557,31 @@ def main():
     print('='*80)
     
     # Загрузка результатов
-    results = load_results('../results/feature_t')
+    results = load_results('../results/feature_distillation_T')
     
     if not results:
-        print('❌ Результаты не найдены в ../results/feature_t!')
+        print('❌ Результаты не найдены в ../results/feature_distillation_T!')
         return
-    
-    # Создаем папку для графиков
-    plots_dir = Path('../plots/feature_distillation')
-    plots_dir.mkdir(parents=True, exist_ok=True)
     
     print('📊 Построение графиков...\n')
     
     # 1. Основной график - Learning Curves
-    plot_main_learning_curve(results, save_path='../plots/feature_distillation/learning_curve_main.png')
+    plot_main_learning_curve(results, save_path='../plots/feature_distillation_T/learning_curve_main.png')
     
     # 2. Влияние alpha
-    plot_alpha_comparison(results, save_path='../plots/feature_distillation/alpha_effect.png')
+    plot_alpha_comparison(results, save_path='../plots/feature_distillation_T/alpha_effect.png')
     
     # 3. Влияние температуры
-    plot_temperature_comparison(results, save_path='../plots/feature_distillation/temperature_effect.png')
+    plot_temperature_comparison(results, save_path='../plots/feature_distillation_T/temperature_effect.png')
     
     # 4. Loss curves
-    plot_loss_curves(results, save_path='../plots/feature_distillation/loss_curves.png')
+    plot_loss_curves(results, save_path='../plots/feature_distillation_T/loss_curves.png')
     
     # 5. Cosine Similarity
-    plot_cosine_similarity(results, save_path='../plots/feature_distillation/cosine_similarity.png')
+    plot_cosine_similarity(results, save_path='../plots/feature_distillation_T/cosine_similarity.png')
     
     # 6. Таблица результатов
-    plot_summary_table(results, save_path='../plots/feature_distillation/summary_table.png')
+    plot_summary_table(results, save_path='../plots/feature_distillation_T/summary_table.png')
     
     # Статистика
     print_summary(results)
@@ -581,7 +589,7 @@ def main():
     print('\n' + '='*80)
     print('🎉 ВСЕ ГРАФИКИ ГОТОВЫ!')
     print('='*80)
-    print(f'📁 Графики сохранены в: ../plots/feature_distillation/')
+    print(f'📁 Графики сохранены в: ../plots/feature_distillation_T/')
     print('\nСозданные файлы:')
     print('  • learning_curve_main.png     - Основной график Performance vs Budget')
     print('  • alpha_effect.png            - Влияние веса дистилляции α')
